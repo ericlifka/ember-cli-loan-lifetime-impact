@@ -6,7 +6,7 @@ export default Component.extend({
   classNames: [ 'lli-loan-frame' ],
   layout,
 
-  loanTotalDisplay: computed('frame.endingBalance', function () {
+  loanRemainingDisplay: computed('frame.endingBalance', function () {
     return this.truncTwoDecimals(this.get('frame.endingBalance'));
   }),
 
