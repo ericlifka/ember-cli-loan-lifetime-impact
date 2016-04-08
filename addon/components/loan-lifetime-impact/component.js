@@ -25,8 +25,8 @@ export default Component.extend({
   }),
 
   runCalculation: on('init', observer('loanAmount', 'interestRate', 'monthlyPayment', function () {
-    let startingBalance = this.get('loanAmount');
-    console.log(typeof startingBalance);
+    let loanAmount = this.get('loanAmount');
+    let startingBalance = loanAmount;
     let frames = [];
     let month = 1;
 
@@ -36,6 +36,7 @@ export default Component.extend({
       let endingBalance = startingBalance + interestAmount - this.get('monthlyPayment');
 
       frames.push(Ember.Object.create({
+        loanAmount,
         startingBalance,
         interestAmount,
         endingBalance,
