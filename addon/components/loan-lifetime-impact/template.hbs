@@ -1,17 +1,19 @@
 <div class="lli-inputs">
   <div class="lli-input-group">
     <label for="loan-amount">Loan total</label>
-    {{input id="loan-amount" value=loanAmount}}
+    {{input id="loan-amount" value=loanAmountInput}}
   </div>
   <div class="lli-input-group">
     <label for="interest-rate">Interest rate</label>
-    {{input id="interest-rate" value=interestRate}}
+    {{input id="interest-rate" value=interestRateInput}}
   </div>
   <div class="lli-input-group">
     <label for="monthly-payment">Monthly payment</label>
-    {{input id="monthly-payment" value=monthlyPayment}}
+    {{input id="monthly-payment" value=monthlyPaymentInput}}
   </div>
 </div>
 <div class="lli-graph">
-  {{lli-loan-frame frame=loanFrames}}
+  {{#each loanFrames as |frame|}}
+    {{lli-loan-frame frame=frame}}
+  {{/each}}
 </div>

@@ -6,37 +6,46 @@ export default Component.extend({
   classNames: [ 'loan-lifetime-impact' ],
   layout,
 
-  loanAmount: 132000,
-  interestRate: 4.0,
-  monthlyPayment: 800,
+  loanAmountInput: 132000,
+  interestRateInput: 4.0,
+  monthlyPaymentInput: 800,
+
+  loanAmount: computed('loanAmountInput', function () {
+    return parseFloat("" + this.get('loanAmountInput'));
+  }),
+  interestRate: computed('interestRateInput', function () {
+    return parseFloat("" + this.get('interestRateInput'));
+  }),
+  monthlyPayment: computed('monthlyPaymentInput', function () {
+    return parseFloat("" + this.get('monthlyPaymentInput'));
+  }),
 
   monthlyInterestRate: computed('interestRate', function () {
     return this.get('interestRate') / 100.0 / 12;
   }),
 
   runCalculation: on('init', observer('loanAmount', 'interestRate', 'monthlyPayment', function () {
-    let loanAmount = this.get('loanAmount');
-    let loanFrames = this.calculateNextFrame(loanAmount);
-    console.log(loanFrames);
-    this.set('loanFrames', loanFrames);
-  })),
+    let startingBalance = this.get('loanAmount');
+    console.log(typeof startingBalance);
+    let frames = [];
+    let month = 1;
 
-  calculateNextFrame(startingBalance) {
-    let interestDecimal = this.get('monthlyInterestRate');
-    let interestAmount = startingBalance * interestDecimal;
-    let endingBalance = startingBalance + interestAmount - this.get('monthlyPayment');
-    console.log(startingBalance, interestAmount, endingBalance);
+    while (startingBalance > 0) {
+      let interestDecimal = this.get('monthlyInterestRate');
+      let interestAmount = startingBalance * interestDecimal;
+      let endingBalance = startingBalance + interestAmount - this.get('monthlyPayment');
 
-    let frame = Ember.Object.create({
-      startingBalance,
-      interestAmount,
-      endingBalance
-    });
+      frames.push(Ember.Object.create({
+        startingBalance,
+        interestAmount,
+        endingBalance,
+        month
+      }));
 
-    if (endingBalance > 0) {
-      frame.next = this.calculateNextFrame(endingBalance);
+      startingBalance = endingBalance;
+      month++;
     }
 
-    return frame;
-  }
+    this.set('loanFrames', frames);
+  }))
 });
