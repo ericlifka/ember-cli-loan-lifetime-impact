@@ -17,7 +17,7 @@ export default Component.extend({
   runCalculation: on('init', observer('loanAmount', 'interestRate', 'monthlyPayment', function () {
     let loanAmount = this.get('loanAmount');
     let loanFrames = this.calculateNextFrame(loanAmount);
-
+    console.log(loanFrames);
     this.set('loanFrames', loanFrames);
   })),
 
@@ -25,6 +25,7 @@ export default Component.extend({
     let interestDecimal = this.get('monthlyInterestRate');
     let interestAmount = startingBalance * interestDecimal;
     let endingBalance = startingBalance + interestAmount - this.get('monthlyPayment');
+    console.log(startingBalance, interestAmount, endingBalance);
 
     let frame = Ember.Object.create({
       startingBalance,
