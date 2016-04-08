@@ -1,38 +1,40 @@
 import Ember from 'ember';
 import layout from './template';
-let { Component, computed, observer } = Ember;
+let { Component, computed, observer, on } = Ember;
 
 export default Component.extend({
   classNames: [ 'loan-lifetime-impact' ],
   layout,
 
-  loanAmount: 0,
-  interestRate: 0,
-  monthlyPayment: 0,
+  loanAmount: 132000,
+  interestRate: 4.0,
+  monthlyPayment: 800,
 
   monthlyInterestRate: computed('interestRate', function () {
     return this.get('interestRate') / 100.0 / 12;
   }),
 
-  runCalculation: observer('loanAmount', 'interestRate', 'monthlyPayment', function () {
+  runCalculation: on('init', observer('loanAmount', 'interestRate', 'monthlyPayment', function () {
     let loanAmount = this.get('loanAmount');
+    let loanFrames = this.calculateNextFrame(loanAmount);
 
-    this.set('loanFrame', this.calculateNextFrame(loanAmount));
-  }),
+    this.set('loanFrames', loanFrames);
+  })),
 
-  calculateNextFrame(loanAmount) {
+  calculateNextFrame(startingBalance) {
     let interestDecimal = this.get('monthlyInterestRate');
-    let nextMonthInterest = loanAmount * interestDecimal;
-    let endingBalance = loanAmount + nextMonthInterest - this.get('monthlyPayment');
+    let interestAmount = startingBalance * interestDecimal;
+    let endingBalance = startingBalance + interestAmount - this.get('monthlyPayment');
 
-    let frame = {
-      loanAmount,
-      interestDecimal,
-      nextMonthInterest,
+    let frame = Ember.Object.create({
+      startingBalance,
+      interestAmount,
       endingBalance
-    };
+    });
 
-    frame.next = this.calculateNextFrame(endingBalance);
+    if (endingBalance > 0) {
+      frame.next = this.calculateNextFrame(endingBalance);
+    }
 
     return frame;
   }
