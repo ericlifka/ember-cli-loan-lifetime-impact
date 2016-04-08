@@ -10,6 +10,10 @@ export default Component.extend({
     let loanAmount = this.get('frame.loanAmount');
     let endingBalance = this.get('frame.endingBalance');
 
-    return `${endingBalance / loanAmount * 100}`.slice(0, 4);
+    return `${endingBalance / loanAmount * 100}`.slice(0, 4) + '%';
+  }),
+
+  loanRemainingStyle: computed('percentComplete', function () {
+    return `width: ${this.get('percentComplete')}`;
   })
 });
