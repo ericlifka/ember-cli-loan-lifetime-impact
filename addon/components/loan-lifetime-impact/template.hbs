@@ -11,9 +11,13 @@
     <label for="monthly-payment">Monthly payment</label>
     {{input id="monthly-payment" value=monthlyPaymentInput}}
   </div>
+  <div class="lli-input-group">
+    <label for="extra-payment">Regular extra payment</label>
+    {{input id="extra-payment" value=extraPaymentInput}}
+  </div>
 </div>
 <div class="lli-graph">
-  {{#each loanFrames as |frame|}}
+  {{#each loan.frames as |frame|}}
     {{lli-loan-frame frame=frame}}
   {{/each}}
 </div>

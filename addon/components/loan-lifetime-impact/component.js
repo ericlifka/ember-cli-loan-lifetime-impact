@@ -9,6 +9,7 @@ export default Component.extend({
   loanAmountInput: 132000,
   interestRateInput: 4.0,
   monthlyPaymentInput: 800,
+  extraPaymentInput: 0,
 
   loanAmount: computed('loanAmountInput', function () {
     return parseFloat("" + this.get('loanAmountInput'));
@@ -19,6 +20,9 @@ export default Component.extend({
   monthlyPayment: computed('monthlyPaymentInput', function () {
     return parseFloat("" + this.get('monthlyPaymentInput'));
   }),
+  extraPayment: computed('extraPaymentInput', function () {
+    return parseFloat("" + this.get('extraPaymentInput'));
+  }),
 
   monthlyInterestRate: computed('interestRate', function () {
     return this.get('interestRate') / 100.0 / 12;
@@ -27,7 +31,9 @@ export default Component.extend({
   runCalculation: on('init', observer('loanAmount', 'interestRate', 'monthlyPayment', function () {
     let loanAmount = this.get('loanAmount');
     let startingBalance = loanAmount;
-    let frames = [];
+    let loan = {
+      frames: []
+    };
     let month = 1;
 
     while (startingBalance > 0) {
@@ -35,7 +41,7 @@ export default Component.extend({
       let interestAmount = startingBalance * interestDecimal;
       let endingBalance = startingBalance + interestAmount - this.get('monthlyPayment');
 
-      frames.push(Ember.Object.create({
+      loan.frames.push(Ember.Object.create({
         loanAmount,
         startingBalance,
         interestAmount,
@@ -47,6 +53,6 @@ export default Component.extend({
       month++;
     }
 
-    this.set('loanFrames', frames);
+    this.set('loan', Ember.Object.create(loan));
   }))
 });
