@@ -21,6 +21,23 @@ export default Component.extend({
     return `width: ${this.get('percentComplete')}`;
   }),
 
+  totalPayment: computed('loan.{monthlyPayment,extraPayment}', function () {
+    console.log(this.get('loan'));
+    console.log(this.get('loan.monthlyPayment'), this.get('loan.extraPayment'));
+    return this.get('loan.monthlyPayment') + this.get('loan.extraPayment');
+  }),
+
+  interestPercentage: computed('totalPayment', 'frame.interestAmount', function () {
+    let interestAmount = this.get('frame.interestAmount');
+    let totalPayment = this.get('totalPayment');
+
+    return this.truncTwoDecimals(interestAmount / totalPayment * 100);
+  }),
+
+  interestPercentageStyle: computed('interestPercentage', function () {
+    return `width: ${this.get('interestPercentage')}%`;
+  }),
+
   truncTwoDecimals(amnt) {
     return Math.round(amnt * 100) / 100;
   }

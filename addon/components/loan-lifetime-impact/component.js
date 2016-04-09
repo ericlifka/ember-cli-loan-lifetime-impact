@@ -43,6 +43,7 @@ export default Component.extend({
 
     loan.set('frames', []);
     loan.set('extraPayment', extraPayment);
+    loan.set('monthlyPayment', monthlyPayment);
     loan.set('monthlyInterestRate', monthlyInterestRate);
 
     let startingBalance = loanAmount;
