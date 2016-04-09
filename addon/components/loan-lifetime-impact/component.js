@@ -28,12 +28,18 @@ export default Component.extend({
     return this.get('interestRate') / 100.0 / 12;
   }),
 
-  runCalculation: on('init', observer('loanAmount', 'interestRate', 'monthlyPayment', function () {
+  loan: computed(function () {
+    return Ember.Object.create({
+      frames: []
+    });
+  }),
+
+  runCalculation: on('init', observer('loanAmount', 'interestRate', 'monthlyPayment', 'extraPayment', function () {
     let loanAmount = this.get('loanAmount');
     let startingBalance = loanAmount;
-    let loan = {
-      frames: []
-    };
+    let loan = this.get('loan');
+    loan.set('frames', []);
+    loan.set('extraPayment', this.get('extraPayment'));
     let month = 1;
 
     while (startingBalance > 0) {
@@ -52,7 +58,5 @@ export default Component.extend({
       startingBalance = endingBalance;
       month++;
     }
-
-    this.set('loan', Ember.Object.create(loan));
   }))
 });
