@@ -35,18 +35,21 @@ export default Component.extend({
   }),
 
   runCalculation: on('init', observer('loanAmount', 'interestRate', 'monthlyPayment', 'extraPayment', function () {
+    let loan = this.get('loan');
     let loanAmount = this.get('loanAmount');
     let extraPayment = this.get('extraPayment');
     let monthlyPayment = this.get('monthlyPayment');
-    let startingBalance = loanAmount;
-    let loan = this.get('loan');
+    let monthlyInterestRate = this.get('monthlyInterestRate');
+
     loan.set('frames', []);
     loan.set('extraPayment', extraPayment);
+    loan.set('monthlyInterestRate', monthlyInterestRate);
+
+    let startingBalance = loanAmount;
     let month = 1;
 
     while (startingBalance > 0) {
-      let interestDecimal = this.get('monthlyInterestRate');
-      let interestAmount = startingBalance * interestDecimal;
+      let interestAmount = startingBalance * monthlyInterestRate;
       let endingBalance = startingBalance + interestAmount - monthlyPayment - extraPayment;
 
       loan.frames.push(Ember.Object.create({
