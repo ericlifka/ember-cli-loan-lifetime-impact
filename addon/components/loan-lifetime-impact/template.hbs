@@ -17,6 +17,14 @@
   </div>
 </div>
 <div class="lli-graph">
+  <div class="lli-loan-frame lli-header">
+    <span class="lli-month">month</span>
+    <span class="lli-percent">interest %</span>
+    <span class="lli-payment-total-bar"></span>
+    <span class="lli-loan-total-bar"></span>
+    <span class="lli-remaining">balance $</span>
+  </div>
+
   {{#each loan.frames as |frame|}}
     {{lli-loan-frame loan=loan frame=frame}}
   {{/each}}
