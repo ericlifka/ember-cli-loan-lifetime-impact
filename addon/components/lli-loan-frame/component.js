@@ -14,11 +14,11 @@ export default Component.extend({
     let loanAmount = this.get('frame.loanAmount');
     let endingBalance = this.get('frame.endingBalance');
 
-    return this.truncTwoDecimals(endingBalance / loanAmount * 100) + '%';
+    return this.truncTwoDecimals(endingBalance / loanAmount * 100);
   }),
 
   loanRemainingStyle: computed('percentComplete', function () {
-    return `width: ${this.get('percentComplete')}`;
+    return `width: ${this.get('percentComplete')}%`;
   }),
 
   totalPayment: computed('loan.{monthlyPayment,extraPayment}', function () {
