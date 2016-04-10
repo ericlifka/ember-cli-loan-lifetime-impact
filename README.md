@@ -1,6 +1,7 @@
 # Ember-cli-loan-lifetime-impact
 
-This README outlines the details of collaborating on this Ember addon.
+A simple visualization of loan cost over the whole loan lifetime, with the impact of extra payments and regular overpayment factored in.
+Running demo: http://www.ericlifka.com/ember-cli-loan-lifetime-impact/
 
 ## Installation
 
