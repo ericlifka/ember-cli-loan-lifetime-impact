@@ -30,11 +30,12 @@ export default Component.extend({
 
   loan: computed(function () {
     return Ember.Object.create({
-      frames: []
+      frames: [],
+      discretePayments: []
     });
   }),
 
-  watchForRunCalculation: on('init', observer('loanAmount', 'interestRate', 'monthlyPayment', 'extraPayment', function () {
+  watchForRunCalculation: on('init', observer('loanAmount', 'interestRate', 'monthlyPayment', 'extraPayment', 'loan.discretePayments.[]', function () {
     Ember.run.debounce(this, this.runCalculation, 500);
   })),
 
@@ -44,12 +45,13 @@ export default Component.extend({
     let extraPayment = this.get('extraPayment');
     let monthlyPayment = this.get('monthlyPayment');
     let monthlyInterestRate = this.get('monthlyInterestRate');
+    let discretePayments = this.convertPaymentsToObject(loan.get('discretePayments'));
 
     loan.set('extraPayment', extraPayment);
     loan.set('monthlyPayment', monthlyPayment);
     loan.set('monthlyInterestRate', monthlyInterestRate);
-    loan.set('frames', this.calculateLoanFrames(loanAmount, monthlyInterestRate, monthlyPayment, extraPayment));
-    loan.set('baseFrames', this.calculateLoanFrames(loanAmount, monthlyInterestRate, monthlyPayment, 0));
+    loan.set('frames', this.calculateLoanFrames(loanAmount, monthlyInterestRate, monthlyPayment, extraPayment, discretePayments));
+    loan.set('baseFrames', this.calculateLoanFrames(loanAmount, monthlyInterestRate, monthlyPayment, 0, {}));
 
     let totalInterestPaid = this.calculateLoanInterest(loan.get('frames'));
     let baseInterestPaid = this.calculateLoanInterest(loan.get('baseFrames'));
@@ -61,19 +63,22 @@ export default Component.extend({
     loan.set('monthsSaved', loan.get('baseFrames.length') - loan.get('frames.length'));
   },
 
-  calculateLoanFrames(loanAmount, monthlyInterestRate, monthlyPayment, extraPayment) {
+  calculateLoanFrames(loanAmount, monthlyInterestRate, monthlyPayment, extraPayment, discretePayments) {
     let frames = [];
     let startingBalance = loanAmount;
     let month = 1;
 
     while (startingBalance > 0) {
       let interestAmount = startingBalance * monthlyInterestRate;
-      let endingBalance = startingBalance + interestAmount - monthlyPayment - extraPayment;
+      let discretePayment = discretePayments[ month ] || 0;
+      let totalPayment = monthlyPayment + extraPayment + discretePayment;
+      let endingBalance = startingBalance + interestAmount - totalPayment;
 
       frames.push(Ember.Object.create({
         loanAmount,
         startingBalance,
         interestAmount,
+        totalPayment,
         endingBalance,
         month
       }));
@@ -87,7 +92,9 @@ export default Component.extend({
 
   calculateLoanInterest(loanFrames) {
     let interestPaid = 0;
-    loanFrames.forEach(frame => interestPaid += frame.get('interestAmount'));
+    loanFrames.forEach(frame => {
+      interestPaid += frame.get('interestAmount');
+    });
     return interestPaid;
   },
 
@@ -95,9 +102,18 @@ export default Component.extend({
     return Math.round(amnt * 100) / 100;
   },
 
+  convertPaymentsToObject(paymentsArray) {
+    let obj = { };
+    paymentsArray.forEach(payment => {
+      obj[payment.month] = payment.amount;
+    });
+    return obj;
+  },
+
   actions: {
-    addExtraPayment() {
-      console.log(arguments);
+    addExtraPayment(month, amount) {
+      this.get('loan.discretePayments').push({ month, amount });
+      this.runCalculation();
     }
   }
 });

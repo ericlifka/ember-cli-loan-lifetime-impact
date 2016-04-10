@@ -47,7 +47,7 @@ export default Component.extend({
       this.toggleProperty('addingPayment');
     },
     addExtraPayment() {
-      this.attrs.addExtraPayment(this.get('frame.month'), this.get('extraPaymentInput'));
+      this.attrs.addExtraPayment(this.get('frame.month'), parseFloat(this.get('extraPaymentInput')));
     }
   }
 });
