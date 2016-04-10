@@ -114,13 +114,14 @@ export default Component.extend({
   actions: {
     addExtraPayment(month, amount) {
       this.get('loan.discretePayments').push({ month, amount });
-      this.runCalculation();
+      Ember.run.scheduleOnce('afterRender', this, this.runCalculation);
     },
     removeExtraPayment(month) {
       let payments = this.get('loan.discretePayments');
       let index = payments.findIndex(payment =>  payment.month === month);
       payments.splice(index, 1);
-      this.runCalculation();
+
+      Ember.run.scheduleOnce('afterRender', this, this.runCalculation);
     }
   }
 });
