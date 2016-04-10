@@ -44,7 +44,17 @@ export default Component.extend({
     loan.set('extraPayment', extraPayment);
     loan.set('monthlyPayment', monthlyPayment);
     loan.set('monthlyInterestRate', monthlyInterestRate);
-    loan.set('frames', this.calculateLoanFrames(loanAmount, monthlyInterestRate, monthlyPayment, extraPayment))
+    loan.set('frames', this.calculateLoanFrames(loanAmount, monthlyInterestRate, monthlyPayment, extraPayment));
+    loan.set('baseFrames', this.calculateLoanFrames(loanAmount, monthlyInterestRate, monthlyPayment, 0));
+
+    let totalInterestPaid = this.calculateLoanInterest(loan.get('frames'));
+    let baseInterestPaid = this.calculateLoanInterest(loan.get('baseFrames'));
+    let interestSaved = this.truncTwoDecimals(baseInterestPaid - totalInterestPaid);
+    loan.set('totalInterestPaid', totalInterestPaid);
+    loan.set('baseInterestPaid', baseInterestPaid);
+    loan.set('interestSaved', interestSaved);
+
+    loan.set('monthsSaved', loan.get('baseFrames.length') - loan.get('frames.length'));
   })),
 
   calculateLoanFrames(loanAmount, monthlyInterestRate, monthlyPayment, extraPayment) {
@@ -69,5 +79,15 @@ export default Component.extend({
     }
 
     return frames;
+  },
+
+  calculateLoanInterest(loanFrames) {
+    let interestPaid = 0;
+    loanFrames.forEach(frame => interestPaid += frame.get('interestAmount'));
+    return interestPaid;
+  },
+
+  truncTwoDecimals(amnt) {
+    return Math.round(amnt * 100) / 100;
   }
 });

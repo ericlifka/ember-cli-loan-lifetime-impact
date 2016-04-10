@@ -15,6 +15,14 @@
     <label for="extra-payment">Regular extra payment</label>
     {{input id="extra-payment" value=extraPaymentInput}}
   </div>
+  <div class="lli-input-group">
+    Loan paid off early by <i>{{loan.monthsSaved}}</i> months
+  </div>
+  <div class="lli-input-group">
+    Interest Saved via extra payments:
+    <i>${{loan.interestSaved}}</i>
+  </div>
+
 </div>
 <div class="lli-graph">
   <div class="lli-loan-frame lli-header">
