@@ -17,11 +17,12 @@
   {{#if hasExtraPayment}}
   {{else}}
     {{#if addingPayment}}
-      <form {{action "addExtraPayment" on="submit"}}>
+      <i class="lli-icon lli-cancel" {{action "toggleExtraPaymentForm"}}>--</i>
+      <form class="lli-extra-payment-form" {{action "addExtraPayment" on="submit"}}>
         {{input value=extraPaymentInput}}
       </form>
     {{else}}
-      <i class="lli-icon" {{action "showExtraPaymentForm"}}>+</i>
+      <i class="lli-icon lli-add" {{action "toggleExtraPaymentForm"}}>+</i>
     {{/if}}
   {{/if}}
 </div>

@@ -43,8 +43,8 @@ export default Component.extend({
   },
 
   actions: {
-    showExtraPaymentForm() {
-      this.set('addingPayment', true);
+    toggleExtraPaymentForm() {
+      this.toggleProperty('addingPayment');
     },
     addExtraPayment() {
       this.attrs.addExtraPayment(this.get('frame.month'), this.get('extraPaymentInput'));

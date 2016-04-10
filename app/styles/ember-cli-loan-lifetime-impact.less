@@ -7,11 +7,20 @@
     justify-content: center;
     border-radius: 50%;
     font-size: 10px;
-    background-color: #ccc;
     color: white;
     cursor: pointer;
-    &:hover {
-      background-color: black;
+
+    &.lli-add {
+      background-color: #ccc;
+      &:hover {
+        background-color: black;
+      }
+    }
+    &.lli-cancel {
+      background-color: #ffa8b5;
+      &:hover {
+        background-color: red;
+      }
     }
   }
 
@@ -92,6 +101,41 @@
 
       .lli-extra-payment {
         display: inline-block;
+        position: relative;
+
+        .lli-extra-payment-form {
+          position: absolute;
+          border: 4px solid #c2e1f5;
+          padding: 3px;
+
+          top: -12px;
+          left: 20px;
+
+          &:before, &:after {
+            right: 100%;
+            top: 50%;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+          }
+          &:after {
+            border-color: rgba(136, 183, 213, 0);
+            border-right-color: white;
+            border-width: 10px;
+            margin-top: -10px;
+            left: -18px;
+          }
+          &:before {
+            border-color: rgba(194, 225, 245, 0);
+            border-right-color: #c2e1f5;
+            border-width: 10px;
+            margin-top: -10px;
+            left: -24px;
+          }
+        }
       }
     }
   }
