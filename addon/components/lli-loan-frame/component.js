@@ -40,5 +40,14 @@ export default Component.extend({
 
   truncTwoDecimals(amnt) {
     return Math.round(amnt * 100) / 100;
+  },
+
+  actions: {
+    showExtraPaymentForm() {
+      this.set('addingPayment', true);
+    },
+    addExtraPayment() {
+      this.attrs.addExtraPayment(this.get('frame.month'), this.get('extraPaymentInput'));
+    }
   }
 });

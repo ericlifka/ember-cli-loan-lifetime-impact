@@ -93,5 +93,11 @@ export default Component.extend({
 
   truncTwoDecimals(amnt) {
     return Math.round(amnt * 100) / 100;
+  },
+
+  actions: {
+    addExtraPayment() {
+      console.log(arguments);
+    }
   }
 });

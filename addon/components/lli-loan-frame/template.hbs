@@ -13,6 +13,15 @@
 <span class="lli-remaining">${{loanRemainingDisplay}}</span>
 <span class="lli-percent">{{percentComplete}}%</span>
 
-<span class="lli-extra-payment">
-  <i class="lli-icon">+</i>
-</span>
+<div class="lli-extra-payment">
+  {{#if hasExtraPayment}}
+  {{else}}
+    {{#if addingPayment}}
+      <form {{action "addExtraPayment" on="submit"}}>
+        {{input value=extraPaymentInput}}
+      </form>
+    {{else}}
+      <i class="lli-icon" {{action "showExtraPaymentForm"}}>+</i>
+    {{/if}}
+  {{/if}}
+</div>

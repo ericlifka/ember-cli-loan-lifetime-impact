@@ -34,6 +34,9 @@
   </div>
 
   {{#each loan.frames as |frame|}}
-    {{lli-loan-frame loan=loan frame=frame}}
+    {{lli-loan-frame
+      loan=loan
+      frame=frame
+      addExtraPayment=(action "addExtraPayment")}}
   {{/each}}
 </div>
