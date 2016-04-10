@@ -41,11 +41,11 @@ export default Component.extend({
     let monthlyPayment = this.get('monthlyPayment');
     let monthlyInterestRate = this.get('monthlyInterestRate');
 
-    loan.set('frames', []);
     loan.set('extraPayment', extraPayment);
     loan.set('monthlyPayment', monthlyPayment);
     loan.set('monthlyInterestRate', monthlyInterestRate);
 
+    let frames = [];
     let startingBalance = loanAmount;
     let month = 1;
 
@@ -53,7 +53,7 @@ export default Component.extend({
       let interestAmount = startingBalance * monthlyInterestRate;
       let endingBalance = startingBalance + interestAmount - monthlyPayment - extraPayment;
 
-      loan.frames.push(Ember.Object.create({
+      frames.push(Ember.Object.create({
         loanAmount,
         startingBalance,
         interestAmount,
@@ -64,5 +64,7 @@ export default Component.extend({
       startingBalance = endingBalance;
       month++;
     }
+
+    loan.set('frames', frames);
   }))
 });
