@@ -79,6 +79,7 @@ export default Component.extend({
         startingBalance,
         interestAmount,
         totalPayment,
+        discretePayment,
         endingBalance,
         month
       }));
@@ -113,6 +114,12 @@ export default Component.extend({
   actions: {
     addExtraPayment(month, amount) {
       this.get('loan.discretePayments').push({ month, amount });
+      this.runCalculation();
+    },
+    removeExtraPayment(month) {
+      let payments = this.get('loan.discretePayments');
+      let index = payments.findIndex(payment =>  payment.month === month);
+      payments.splice(index, 1);
       this.runCalculation();
     }
   }

@@ -14,7 +14,9 @@
 <span class="lli-percent">{{percentComplete}}%</span>
 
 <div class="lli-extra-payment">
-  {{#if hasExtraPayment}}
+  {{#if frame.discretePayment}}
+    <i class="lli-icon lli-cancel" {{action "removeExtraPayment"}}>--</i>
+    <span class="lli-extra-payment">${{frame.discretePayment}}</span>
   {{else}}
     {{#if addingPayment}}
       <i class="lli-icon lli-cancel" {{action "toggleExtraPaymentForm"}}>--</i>
