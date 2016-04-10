@@ -34,7 +34,11 @@ export default Component.extend({
     });
   }),
 
-  runCalculation: on('init', observer('loanAmount', 'interestRate', 'monthlyPayment', 'extraPayment', function () {
+  watchForRunCalculation: on('init', observer('loanAmount', 'interestRate', 'monthlyPayment', 'extraPayment', function () {
+    Ember.run.debounce(this, this.runCalculation, 500);
+  })),
+
+  runCalculation() {
     let loan = this.get('loan');
     let loanAmount = this.get('loanAmount');
     let extraPayment = this.get('extraPayment');
@@ -55,7 +59,7 @@ export default Component.extend({
     loan.set('interestSaved', interestSaved);
 
     loan.set('monthsSaved', loan.get('baseFrames.length') - loan.get('frames.length'));
-  })),
+  },
 
   calculateLoanFrames(loanAmount, monthlyInterestRate, monthlyPayment, extraPayment) {
     let frames = [];
