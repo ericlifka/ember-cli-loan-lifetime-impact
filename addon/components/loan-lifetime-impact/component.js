@@ -53,12 +53,14 @@ export default Component.extend({
     loan.set('frames', this.calculateLoanFrames(loanAmount, monthlyInterestRate, monthlyPayment, extraPayment, discretePayments));
     loan.set('baseFrames', this.calculateLoanFrames(loanAmount, monthlyInterestRate, monthlyPayment, 0, {}));
 
-    let totalInterestPaid = this.calculateLoanInterest(loan.get('frames'));
+    let totalInterestPaid = this.truncTwoDecimals(this.calculateLoanInterest(loan.get('frames')));
     let baseInterestPaid = this.calculateLoanInterest(loan.get('baseFrames'));
     let interestSaved = this.truncTwoDecimals(baseInterestPaid - totalInterestPaid);
+    let totalLoanCost = this.truncTwoDecimals(this.calculateTotalCost(loan.get('frames')));
     loan.set('totalInterestPaid', totalInterestPaid);
     loan.set('baseInterestPaid', baseInterestPaid);
     loan.set('interestSaved', interestSaved);
+    loan.set('totalLoanCost', totalLoanCost);
 
     loan.set('monthsSaved', loan.get('baseFrames.length') - loan.get('frames.length'));
   },
@@ -97,6 +99,14 @@ export default Component.extend({
       interestPaid += frame.get('interestAmount');
     });
     return interestPaid;
+  },
+
+  calculateTotalCost(loanFrames) {
+    let totalPaid = 0;
+    loanFrames.forEach(frame => {
+      totalPaid += frame.get('totalPayment');
+    });
+    return totalPaid;
   },
 
   truncTwoDecimals(amnt) {
