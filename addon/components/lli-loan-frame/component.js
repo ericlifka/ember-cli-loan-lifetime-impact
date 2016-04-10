@@ -21,15 +21,9 @@ export default Component.extend({
     return `width: ${this.get('percentComplete')}%`;
   }),
 
-  totalPayment: computed('loan.{monthlyPayment,extraPayment}', function () {
-    console.log(this.get('loan'));
-    console.log(this.get('loan.monthlyPayment'), this.get('loan.extraPayment'));
-    return this.get('loan.monthlyPayment') + this.get('loan.extraPayment');
-  }),
-
-  interestPercentage: computed('totalPayment', 'frame.interestAmount', function () {
+  interestPercentage: computed('frame.totalPayment', 'frame.interestAmount', function () {
     let interestAmount = this.get('frame.interestAmount');
-    let totalPayment = this.get('totalPayment');
+    let totalPayment = this.get('frame.totalPayment');
 
     return this.truncTwoDecimals(interestAmount / totalPayment * 100);
   }),
@@ -47,7 +41,7 @@ export default Component.extend({
       this.set('addingPayment', true);
       Ember.run.scheduleOnce('afterRender', () => {
         this.$('.lli-extra-payment-input').focus();
-      })
+      });
     },
     hideExtraPaymentForm() {
       this.set('addingPayment', false);
