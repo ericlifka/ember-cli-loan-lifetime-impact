@@ -76,6 +76,11 @@ export default Component.extend({
       let totalPayment = monthlyPayment + extraPayment + discretePayment;
       let endingBalance = startingBalance + interestAmount - totalPayment;
 
+      if (endingBalance < 0) {
+        totalPayment += endingBalance;
+        endingBalance = 0;
+      }
+
       frames.push(Ember.Object.create({
         loanAmount,
         startingBalance,
