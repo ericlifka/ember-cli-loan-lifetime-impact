@@ -43,8 +43,14 @@ export default Component.extend({
   },
 
   actions: {
-    toggleExtraPaymentForm() {
-      this.toggleProperty('addingPayment');
+    showExtraPaymentForm() {
+      this.set('addingPayment', true);
+      Ember.run.scheduleOnce('afterRender', () => {
+        this.$('.lli-extra-payment-input').focus();
+      })
+    },
+    hideExtraPaymentForm() {
+      this.set('addingPayment', false);
     },
     addExtraPayment() {
       this.attrs.addExtraPayment(this.get('frame.month'), parseFloat(this.get('extraPaymentInput')));

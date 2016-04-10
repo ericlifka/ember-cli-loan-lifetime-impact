@@ -19,12 +19,12 @@
     <span class="lli-extra-payment">${{frame.discretePayment}}</span>
   {{else}}
     {{#if addingPayment}}
-      <i class="lli-icon lli-cancel" {{action "toggleExtraPaymentForm"}}>--</i>
+      <i class="lli-icon lli-cancel" {{action "hideExtraPaymentForm"}}>--</i>
       <form class="lli-extra-payment-form" {{action "addExtraPayment" on="submit"}}>
-        {{input value=extraPaymentInput}}
+        {{input class="lli-extra-payment-input" value=extraPaymentInput}}
       </form>
     {{else}}
-      <i class="lli-icon lli-add" {{action "toggleExtraPaymentForm"}}>+</i>
+      <i class="lli-icon lli-add" {{action "showExtraPaymentForm"}}>+</i>
     {{/if}}
   {{/if}}
 </div>
