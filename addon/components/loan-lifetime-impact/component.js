@@ -44,7 +44,10 @@ export default Component.extend({
     loan.set('extraPayment', extraPayment);
     loan.set('monthlyPayment', monthlyPayment);
     loan.set('monthlyInterestRate', monthlyInterestRate);
+    loan.set('frames', this.calculateLoanFrames(loanAmount, monthlyInterestRate, monthlyPayment, extraPayment))
+  })),
 
+  calculateLoanFrames(loanAmount, monthlyInterestRate, monthlyPayment, extraPayment) {
     let frames = [];
     let startingBalance = loanAmount;
     let month = 1;
@@ -65,6 +68,6 @@ export default Component.extend({
       month++;
     }
 
-    loan.set('frames', frames);
-  }))
+    return frames;
+  }
 });
