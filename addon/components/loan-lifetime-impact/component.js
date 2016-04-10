@@ -6,9 +6,9 @@ export default Component.extend({
   classNames: [ 'loan-lifetime-impact' ],
   layout,
 
-  loanAmountInput: 132000,
+  loanAmountInput: 250000,
   interestRateInput: 4.0,
-  monthlyPaymentInput: 800,
+  monthlyPaymentInput: 1193.54,
   extraPaymentInput: 0,
 
   loanAmount: computed('loanAmountInput', function () {
