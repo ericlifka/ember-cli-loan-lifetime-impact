@@ -40,6 +40,8 @@ export default Component.extend({
   })),
 
   runCalculation() {
+    this.set('neverEndingLoanError', false);
+
     let loan = this.get('loan');
     let loanAmount = this.get('loanAmount');
     let extraPayment = this.get('extraPayment');
@@ -75,6 +77,11 @@ export default Component.extend({
       let discretePayment = discretePayments[ month ] || 0;
       let totalPayment = monthlyPayment + extraPayment + discretePayment;
       let endingBalance = startingBalance + interestAmount - totalPayment;
+
+      if (endingBalance > startingBalance) {
+        this.set('neverEndingLoanError', true);
+        return;
+      }
 
       if (endingBalance < 0) {
         totalPayment += endingBalance;

@@ -34,19 +34,25 @@
 
 </div>
 <div class="lli-graph">
-  <div class="lli-loan-frame lli-header">
-    <span class="lli-month">month</span>
-    <span class="lli-percent">interest %</span>
-    <span class="lli-payment-total-bar"></span>
-    <span class="lli-loan-total-bar"></span>
-    <span class="lli-remaining">balance $</span>
-  </div>
+  {{#if neverEndingLoanError}}
+    <span class="lli-error-message">
+      This loan will never be paid off, adjust values until the loan isn't infinite.
+    </span>
+  {{else}}
+    <div class="lli-loan-frame lli-header">
+      <span class="lli-month">month</span>
+      <span class="lli-percent">interest %</span>
+      <span class="lli-payment-total-bar"></span>
+      <span class="lli-loan-total-bar"></span>
+      <span class="lli-remaining">balance $</span>
+    </div>
 
-  {{#each loan.frames as |frame|}}
-    {{lli-loan-frame
+    {{#each loan.frames as |frame|}}
+      {{lli-loan-frame
       loan=loan
       frame=frame
       addExtraPayment=(action "addExtraPayment")
       removeExtraPayment=(action "removeExtraPayment")}}
-  {{/each}}
+    {{/each}}
+  {{/if}}
 </div>
